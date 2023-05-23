@@ -62,8 +62,8 @@ RSpec.describe FacilityFactory do
     it 'can list daily hours for NY and MO facilities' do
       @new_york.define_facilities(@new_york_facilities)
       @missouri.define_facilities(@missouri_facilities)
-      expect(@new_york.operating_facilities[0].operating_hours).to eq "Monday - 7:30 AM to 5:00 PM, Tuesday - 7:30 AM to 5:00 PM, Wednesday - 7:30 AM to 5:00 PM, Thursday - 7:30 AM to 5:00 PM, Friday - 7:30 AM to 5:00 PM, Sat & Sun - Closed"
-      expect(@new_york.operating_facilities[1].operating_hours).to eq "Monday - 9:00 AM to 5:00 PM, Tuesday - 9:00 AM to 5:00 PM, Wednesday - 9:00 AM to 5:00 PM, Thursday - 9:00 AM to 5:00 PM, Friday - 9:00 AM to 5:00 PM, Sat & Sun - Closed"
+      expect(@new_york.operating_facilities[0].operating_hours).to eq "Monday-friday - 7:30 To 5:00 Sat & Sun - Closed"
+      expect(@new_york.operating_facilities[1].operating_hours).to eq "Monday-friday - 9:00 To 5:00 Sat & Sun - Closed"
       expect(@missouri.operating_facilities[0].operating_hours).to eq "Monday-friday - 9:00 To 5:00, Last Saturday - 9:00 To 12:00"
       expect(@missouri.operating_facilities[1].operating_hours).to eq "Monday-friday - 9:00 To 5:00, Last Saturday - 9:00 To 1:00, 1st & Last Business Day Of Month - 8:30 To 5:30"
     end

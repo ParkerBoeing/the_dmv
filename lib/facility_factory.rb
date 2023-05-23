@@ -20,7 +20,23 @@ class FacilityFactory
           name: capitalize_words(facility_data[:office_name]),
           address: capitalize_words("#{facility_data[:street_address_line_1]} #{facility_data[:city]} #{facility_data[:state]} #{facility_data[:zip_code]}"),
           phone: format_phone_number(facility_data[:public_phone_number]),
-          operating_hours: "Monday - #{facility_data[:monday_beginning_hours]} to #{facility_data[:monday_ending_hours]}, Tuesday - #{facility_data[:tuesday_beginning_hours]} to #{facility_data[:tuesday_ending_hours]}, Wednesday - #{facility_data[:wednesday_beginning_hours]} to #{facility_data[:wednesday_ending_hours]}, Thursday - #{facility_data[:thursday_beginning_hours]} to #{facility_data[:thursday_ending_hours]}, Friday - #{facility_data[:friday_beginning_hours]} to #{facility_data[:friday_ending_hours]}, Sat & Sun - Closed"
+          operating_hours: if facility_data[:monday_beginning_hours] == facility_data[:tuesday_beginning_hours] &&
+                              facility_data[:tuesday_beginning_hours] == facility_data[:wednesday_beginning_hours] &&
+                              facility_data[:wednesday_beginning_hours] == facility_data[:thursday_beginning_hours] &&
+                              facility_data[:thursday_beginning_hours] == facility_data[:friday_beginning_hours] &&
+                              facility_data[:monday_ending_hours] == facility_data[:tuesday_ending_hours] &&
+                              facility_data[:tuesday_ending_hours] == facility_data[:wednesday_ending_hours] &&
+                              facility_data[:wednesday_ending_hours] == facility_data[:thursday_ending_hours] &&
+                              facility_data[:thursday_ending_hours] == facility_data[:friday_ending_hours]
+                              capitalize_operating_hours("Monday-friday - #{facility_data[:monday_beginning_hours]} to #{facility_data[:monday_ending_hours]}, Sat & Sun - Closed")
+          else
+            capitalize_operating_hours("Monday - #{facility_data[:monday_beginning_hours]} to #{facility_data[:monday_ending_hours]}, " +
+            "Tuesday - #{facility_data[:tuesday_beginning_hours]} to #{facility_data[:tuesday_ending_hours]}, " +
+            "Wednesday - #{facility_data[:wednesday_beginning_hours]} to #{facility_data[:wednesday_ending_hours]}, " +
+            "Thursday - #{facility_data[:thursday_beginning_hours]} to #{facility_data[:thursday_ending_hours]}, " +
+            "Friday - #{facility_data[:friday_beginning_hours]} to #{facility_data[:friday_ending_hours]}, " +
+            "Sat & Sun - Closed")
+          end
         })
         @operating_facilities << facility
       elsif facility_data[:state] == "MO"
@@ -53,8 +69,14 @@ class FacilityFactory
 
   def capitalize_operating_hours(hours)
     if hours
-    words = hours.split.map {|word| word.capitalize}
-    words.join(" ")
+      words = hours.split.map do |word| 
+        if word == "AM" || word == "PM,"
+          nil
+        else
+          word.capitalize
+        end
+      end
+      words.compact.join(" ")
     else
       nil
     end
